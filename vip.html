@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nabzclan IPA Library</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #F54F32;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+        }
+        .search-container {
+            margin: 20px auto;
+            text-align: center;
+        }
+        .search-container input {
+            padding: 10px;
+            width: 80%;
+            max-width: 600px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .top-apps {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 20px;
+        }
+        .app-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            padding: 10px;
+            text-align: center;
+            width: 200px;
+        }
+        .app-card img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+        .app-card h3 {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+        .app-card p {
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Nabzclan - IPA Library</h1>
+    <p>Welcome to the best IPA library!</p>
+</header>
+
+<div class="search-container">
+    <input type="text" id="search-bar" placeholder="Search for apps or games..." onkeyup="searchApps()">
+</div>
+
+<h2 style="text-align: center;">Top 5 Apps</h2>
+<div class="top-apps" id="top-apps"></div>
+
+<h2 style="text-align: center;">All Apps</h2>
+<div class="top-apps" id="all-apps"></div>
+
+<script>
+    const data = {
+        "featuredApps": [
+            "com.roblox.robloxmobile",
+            "com.huiynfim.play"
+        ],
+        "apps": [
+            // Insert the full apps data here from the JSON
+        ]
+    };
+
+    const topApps = data.apps.filter(app => data.featuredApps.includes(app.bundleIdentifier));
+    const allApps = data.apps;
+
+    function displayApps(apps, containerId) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = '';
+        apps.forEach(app => {
+            const appCard = document.createElement('div');
+            appCard.classList.add('app-card');
+            appCard.innerHTML = `
+                <img src="${app.iconURL}" alt="${app.name}">
+                <h3>${app.name}</h3>
+                <p>${app.localizedDescription}</p>
+                <a href="${app.downloadURL}" target="_blank">Download</a>
+            `;
+            container.appendChild(appCard);
+        });
+    }
+
+    function searchApps() {
+        const query = document.getElementById('search-bar').value.toLowerCase();
+        const filteredApps = allApps.filter(app => app.name.toLowerCase().includes(query) || app.localizedDescription.toLowerCase().includes(query));
+        displayApps(filteredApps, 'all-apps');
+    }
+
+    displayApps(topApps, 'top-apps');
+    displayApps(allApps, 'all-apps');
+</script>
+
+</body>
+</html>
